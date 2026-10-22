@@ -1,6 +1,6 @@
 package com.example.npcmod;
 
-import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -22,7 +22,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-
 @Mod(modid = "npcmod", name = "NPC Mod", version = "1.0", acceptedMinecraftVersions = "[1.8.9]")
 public class NpcMod {
 
@@ -60,7 +59,6 @@ public class NpcMod {
             });
         }
     }
-
     public static class EntityNpc extends EntityCreature {
 
         public EntityNpc(World worldIn) {
@@ -95,12 +93,11 @@ public class NpcMod {
             return false;
         }
     }
-
     public static class RenderNpc extends RenderBiped<EntityNpc> {
-        private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/steve.png");
+        private static final ResourceLocation TEXTURE = new ResourceLocation("npcmod", "textures/entity/npc.png");
 
         public RenderNpc(RenderManager manager) {
-            super(manager, new ModelBiped(), 0.5F);
+            super(manager, new ModelPlayer(0.0F, false), 0.5F);
         }
 
         @Override
