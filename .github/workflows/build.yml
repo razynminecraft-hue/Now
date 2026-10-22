@@ -1,0 +1,38 @@
+name: Compilar mod
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+
+      - name: Preparar projeto
+        run: |
+          curl -fL -o mdk.zip https://maven.minecraftforge.net/net/minecraftforge/forge/1.8.9-11.15.1.2318-1.8.9/forge-1.8.9-11.15.1.2318-1.8.9-mdk.zip
+          unzip -q mdk.zip -d mdk
+          sed -i 's#http://files.minecraftforge.net/maven#https://maven.minecraftforge.net/#g' mdk/build.gradle
+          rm -rf mdk/src
+          mkdir -p mdk/src/main/java/com/example/npcmod
+          mkdir -p mdk/src/main/resources/assets/npcmod/lang
+          cp "$(find . -maxdepth 1 -iname 'npcmod.java' | head -n 1)" mdk/src/main/java/com/example/npcmod/NpcMod.java
+          echo "entity.Npc.name=NPC" > mdk/src/main/resources/assets/npcmod/lang/en_US.lang
+          chmod +x mdk/gradlew
+
+      - name: Compilar
+        working-directory: mdk
+        run: ./gradlew setupDecompWorkspace build --no-daemon
+
+      - name: Guardar o jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: npcmod-jar
+          path: mdk/build/libs/*.jar
