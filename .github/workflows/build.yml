@@ -23,7 +23,9 @@ jobs:
           rm -rf mdk/src
           mkdir -p mdk/src/main/java/com/example/npcmod
           mkdir -p mdk/src/main/resources/assets/npcmod/lang
+          mkdir -p mdk/src/main/resources/assets/npcmod/textures/entity
           cp "$(find . -maxdepth 1 -iname 'npcmod.java' | head -n 1)" mdk/src/main/java/com/example/npcmod/NpcMod.java
+          cp "$(find . -maxdepth 1 -iname 'npc.png' | head -n 1)" mdk/src/main/resources/assets/npcmod/textures/entity/npc.png
           echo "entity.Npc.name=NPC" > mdk/src/main/resources/assets/npcmod/lang/en_US.lang
           chmod +x mdk/gradlew
 
